@@ -109,7 +109,16 @@ const App = () => {
   })
 
   const resetGame = () => {
-    // Complete in Wave 4
+    for(let i = 0; i < squaresArray.length; i++){
+      squaresArray[i].value = ''
+    }
+    const tempSquares = reshapeMatrix(squaresArray)
+    console.log({tempSquares})
+    console.log({squaresArray})
+    setSquares(tempSquares)
+    setSquaresArray(squaresArray)
+    setCurrentPlayer(PLAYER_1)
+    setWinner(null)
   }
 
   return (
@@ -119,7 +128,7 @@ const App = () => {
         {winner === 'Tie' ? <h2 className='tieGame'>The game is tied!</h2> : ''}
         {winner === null ?  <h2>The current player is {currentPlayer}</h2> : ''}
         {winner === 'O' || winner === 'X'? <h2>The winner is: <span className="winner"> Player{winner}</span>!!!!</h2> : ''}
-        <button>Reset Game</button>
+        <button onClick={resetGame}>Reset Game</button>
       </header>
       <main>
         <Board
