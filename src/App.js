@@ -35,6 +35,7 @@ const App = () => {
   const [squares, setSquares] = useState(generateSquares());
   const [currentPlayer, setCurrentPlayer] = useState(PLAYER_1);
   const [winner, setWinner] = useState('');
+  const [turns, setTurns] = useState(0)
 
   // Wave 2
   // You will need to create a method to change the square 
@@ -54,10 +55,16 @@ const App = () => {
 
       const updatedPlayer = currentPlayer === PLAYER_1 ? PLAYER_2 : PLAYER_1
       setCurrentPlayer(updatedPlayer)
-      checkForWinner(row, id)
+      const gameOver = checkForWinner(row, id)
+      if (!gameOver) {
+        if (turns === 8) {
+          setWinner('Tie')
+        } else {
+          setTurns(turns + 1)
+        }
+      }
     }
   }
-
 
   const checkForWinner = (row, col) => {
     // Complete in Wave 3
@@ -67,6 +74,7 @@ const App = () => {
       squares[row][1]['value'] === currentPlayer &&
       squares[row][2]['value'] === currentPlayer) {
       setWinner(currentPlayer)
+      return true
     }
 
     // check col
@@ -74,6 +82,7 @@ const App = () => {
       squares[1][col]['value'] === currentPlayer &&
       squares[2][col]['value'] === currentPlayer) {
       setWinner(currentPlayer)
+      return true
     }
 
     // check diag
@@ -85,7 +94,9 @@ const App = () => {
         squares[2][0]['value'] === currentPlayer)
     ) {
       setWinner(currentPlayer)
+      return true
     }
+    return false
   }
 
 
@@ -93,17 +104,18 @@ const App = () => {
     setSquares(generateSquares())
     setCurrentPlayer(PLAYER_1)
     setWinner('')
+    setTurns(0)
   }
 
-  // const winnerDisplay = 
+  const gameResults = winner === 'Tie' ? 'Tie Game' : winner.toLocaleLowerCase() === 'x' ? 'The Winner is x' : 'The Winner is o'
 
   return (
     <div className='App'>
       <header className='App-header'>
         <h1>React Tic Tac Toe</h1>
-        <h2>Current Player: {currentPlayer}</h2>
+        {!winner && <h2>Current Player: {currentPlayer}</h2>}
         {/* <h2>Winner is {winner === '' ? '' : winner === 'X' ? 'x' : 'o'} </h2> */}
-        {winner && <h2>Winner is {winner.toLowerCase()} </h2>}
+        {winner && <h2>{gameResults}</h2>}
         <button onClick={resetGame}>Reset Game</button>
       </header>
       <main>
