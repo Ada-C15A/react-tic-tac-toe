@@ -116,9 +116,9 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <h1>React Tic Tac Toe</h1>
-        {winner === 'Tie' ? <h2>The game is tied!</h2> : ''}
+        {winner === 'Tie' ? <h2 className='tieGame'>The game is tied!</h2> : ''}
         {winner === null ?  <h2>The current player is {currentPlayer}</h2> : ''}
-        {winner === 'O' || winner === 'X'? <h2>The winner is player {winner}!!!!</h2> : ''}
+        {winner === 'O' || winner === 'X'? <h2>The winner is: <span className="winner"> Player{winner}</span>!!!!</h2> : ''}
         <button>Reset Game</button>
       </header>
       <main>
