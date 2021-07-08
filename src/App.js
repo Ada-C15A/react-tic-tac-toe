@@ -8,7 +8,6 @@ const PLAYER_2 = 'O';
 
 const generateSquares = () => {
   const squares = [];
-
   let currentId = 0;
 
   for (let row = 0; row < 3; row += 1) {
@@ -25,30 +24,89 @@ const generateSquares = () => {
   return squares;
 }
 
+const destructureMatrix = (squares) => {
+  let destructuredSquare = []
+
+  destructuredSquare.push(...squares[0])
+  destructuredSquare.push(...squares[1])
+  destructuredSquare.push(...squares[2])
+
+  return destructuredSquare
+}
+
+const reshapeMatrix = (array) => {
+  let matrix = []
+
+  matrix.push([array[0], array[1], array[2]])
+  matrix.push([array[3], array[4], array[5]])
+  matrix.push([array[6], array[7], array[8]])
+  return matrix
+}
+
+const updateCurrentPlayer = (currentPlayer, setCurrentPlayer) => {
+  const updatePlayer = currentPlayer === PLAYER_1 ? PLAYER_2:PLAYER_1
+  setCurrentPlayer(updatePlayer)
+}
+
 const App = () => {
-
-  // This starts state off as a 2D array of JS objects with
-  // empty value and unique ids.
   const [squares, setSquares] = useState(generateSquares());
+  const [currentPlayer, setCurrentPlayer] = useState(PLAYER_1)
+  const [squaresArray, setSquaresArray ] = useState(destructureMatrix(squares))
+  const [winner, setWinner ] = useState(null)
 
-  // Wave 2
-  // You will need to create a method to change the square 
-  //   When it is clicked on.
-  //   Then pass it into the squares as a callback
+  const checkForWinner = (squaresArray) => {
+    console.log('checkForWinner')
+    let x = 0
+    let o = 0
+    let empty = false
+    const possibilities = [
+      [squaresArray[0].value, squaresArray[1].value, squaresArray[2].value],
+      [squaresArray[3].value, squaresArray[4].value, squaresArray[5].value],
+      [squaresArray[6].value, squaresArray[7].value, squaresArray[7].value],
+      [squaresArray[0].value, squaresArray[3].value, squaresArray[6].value],
+      [squaresArray[1].value, squaresArray[4].value, squaresArray[2].value],
+      [squaresArray[2].value, squaresArray[5].value, squaresArray[8].value],
+      [squaresArray[0].value, squaresArray[4].value, squaresArray[8].value],
+      [squaresArray[2].value, squaresArray[4].value, squaresArray[6].value]
+    ]
 
+    for(let i = 0; i < possibilities.length; i++){
+      if(possibilities[i][0] === '' || possibilities[i][1] === '' || possibilities[i][2] === ''){
+        empty = true
+      }
+      if(possibilities[i][0] === possibilities[i][1] && possibilities[i][1] === possibilities[i][2]){
+        if(possibilities[i][0] === 'X'){
+          x += 1
+        }
+        if( possibilities[i][0] === 'O'){
+          o += 1
+        }
+      }
+    }
 
-  const checkForWinner = () => {
-    // Complete in Wave 3
-    // You will need to:
-    // 1. Go accross each row to see if 
-    //    3 squares in the same row match
-    //    i.e. same value
-    // 2. Go down each column to see if
-    //    3 squares in each column match
-    // 3. Go across each diagonal to see if 
-    //    all three squares have the same value.
-
+    if(x === 0 && o === 0 && empty){
+      setWinner(null)
+    }
+    if(x === 0 && o === 0 && !empty)
+      setWinner('Tie')
+    if( x > o){
+      setWinner('X')
+    }
+    if(x < o){
+      setWinner('O')
+    }
+    console.log({winner})
   }
+  const onClickCallback = ((squareID, currentPlayer, squaresArray) => {
+    updateCurrentPlayer(currentPlayer, setCurrentPlayer)
+    squaresArray[squareID].value = currentPlayer
+    setSquaresArray(squaresArray)
+    const tempMatrix = reshapeMatrix(squaresArray)
+    setSquares(tempMatrix)
+    const tempSquaresArray = destructureMatrix(squares)
+    setSquaresArray(tempSquaresArray)
+    checkForWinner(squaresArray)
+  })
 
   const resetGame = () => {
     // Complete in Wave 4
@@ -58,11 +116,17 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <h1>React Tic Tac Toe</h1>
-        <h2>The winner is ... -- Fill in for wave 3 </h2>
+        {winner === 'Tie' ? <h2>The game is tied!</h2> : ''}
+        {winner === null ?  <h2>The current player is {currentPlayer}</h2> : ''}
+        {winner === 'O' || winner === 'X'? <h2>The winner is player {winner}!!!!</h2> : ''}
         <button>Reset Game</button>
       </header>
       <main>
-        <Board squares={squares} />
+        <Board
+          onClickCallback={onClickCallback}
+          currentPlayer={currentPlayer}
+          squaresArray={squaresArray}
+        />
       </main>
     </div>
   );

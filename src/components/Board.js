@@ -3,29 +3,37 @@ import './Board.css';
 import Square from './Square';
 import PropTypes from 'prop-types';
 
-
-const generateSquareComponents = (squares, onClickCallback) => {
-  // Complete this for Wave 1
-  // squares is a 2D Array, but 
-  //  you need to return a 1D array
-  //  of square components
-
+const generateSquareComponents = (squaresArray,  onClickCallback, currentPlayer) => {
+  const squaresList =  squaresArray.map( (square) => {
+    return <Square 
+            key={square.id}
+            id={square.id}
+            value={square.value}
+            onClickCallback={onClickCallback}
+            currentPlayer={currentPlayer}
+            squaresArray={squaresArray}
+            />
+  })
+  return squaresList
 }
 
-const Board = ({ squares, onClickCallback }) => {
-  const squareList = generateSquareComponents(squares, onClickCallback);
-  console.log(squareList);
-  return <div className="grid" >
-    {squareList}
-  </div>
+
+const Board = ({ onClickCallback, currentPlayer, squaresArray }) => {
+  const squareComponents = generateSquareComponents(squaresArray, onClickCallback, currentPlayer);
+  return  <div className="grid" >
+            {squareComponents}
+          </div>
 }
 
 Board.propTypes = {
   squares: PropTypes.arrayOf(
     PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        value: PropTypes.string.isRequired
+        // id: PropTypes.number.isRequired,
+        // value: PropTypes.string.isRequired,
+        // squares: PropTypes.array.isRequired,
+        currentPlayer: PropTypes.string.isRequired,
+        squaresArray: PropTypes.array.isRequired
       })
     )
   ),
