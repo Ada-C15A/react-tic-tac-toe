@@ -7,7 +7,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 describe('Wave 1: Square', () => {
   test('it renders with X given', () => {
     render(<Square value="X" id={1} onClickCallback={() => { }} />)
-    
+
     const button = screen.getByText("X");
 
     expect(button).toBeInTheDocument();
@@ -15,7 +15,7 @@ describe('Wave 1: Square', () => {
 
   test('it renders with O given', () => {
     render(<Square value="O" id={1} onClickCallback={() => { }} />)
-    
+
     const button = screen.getByText("O");
 
     expect(button).toBeInTheDocument();
@@ -23,7 +23,7 @@ describe('Wave 1: Square', () => {
 });
 
 describe('Wave 2: Square', () => {
-  test.skip('when clicked on it calls the callback function', async () => {
+  test('when clicked on it calls the callback function', async () => {
     const callback = jest.fn();
 
     render(<Square value="X" id={1} onClickCallback={callback} />);

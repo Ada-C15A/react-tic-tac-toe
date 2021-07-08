@@ -108,7 +108,7 @@ const App = () => {
   }
 
   const gameResults = winner === 'Tie' ? 'Tie Game' :
-    winner === PLAYER_1 ? `The Winner is ${PLAYER_1}` : `The Winner is ${PLAYER_2}`
+    winner === PLAYER_1 ? `Winner is ${PLAYER_1}` : `Winner is ${PLAYER_2}`
 
   return (
     <div className='App'>
