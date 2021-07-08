@@ -3,10 +3,10 @@ import './App.css';
 
 import Board from './components/Board';
 
-// const PLAYER_1 = 'X';
-// const PLAYER_2 = 'O';
-const PLAYER_1 = 'x';
-const PLAYER_2 = 'o';
+const PLAYER_1 = '🌻';
+const PLAYER_2 = '🧟';
+// const PLAYER_1 = 'x';
+// const PLAYER_2 = 'o';
 
 
 const generateSquares = () => {
@@ -68,7 +68,7 @@ const App = () => {
 
   const checkForWinner = (row, col) => {
     // Complete in Wave 3
-    // console.log('check winner called')
+
     // check row
     if (squares[row][0]['value'] === currentPlayer &&
       squares[row][1]['value'] === currentPlayer &&
@@ -107,14 +107,14 @@ const App = () => {
     setTurns(0)
   }
 
-  const gameResults = winner === 'Tie' ? 'Tie Game' : winner.toLocaleLowerCase() === 'x' ? 'The Winner is x' : 'The Winner is o'
+  const gameResults = winner === 'Tie' ? 'Tie Game' :
+    winner === PLAYER_1 ? `The Winner is ${PLAYER_1}` : `The Winner is ${PLAYER_2}`
 
   return (
     <div className='App'>
       <header className='App-header'>
         <h1>React Tic Tac Toe</h1>
         {!winner && <h2>Current Player: {currentPlayer}</h2>}
-        {/* <h2>Winner is {winner === '' ? '' : winner === 'X' ? 'x' : 'o'} </h2> */}
         {winner && <h2>{gameResults}</h2>}
         <button onClick={resetGame}>Reset Game</button>
       </header>
