@@ -222,7 +222,7 @@ describe('App', () => {
   });
 
 
-  describe('Prints "Winner is o" when o wins', () => {
+  describe.skip('Prints "Winner is o" when o wins', () => {
     test('that a winner will be identified when 3 os get in a row across the top', () => {
       // Arrange
       const { container } = render(<App />);
@@ -364,7 +364,7 @@ describe('App', () => {
     });       
   });
 
-  describe.skip('Wave 4:  reset game button', () => {
+  describe('Wave 4:  reset game button', () => {
     test('App has a "Reset Game" button', () => {
       // Arrange-Act
       render(<App />);
