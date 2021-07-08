@@ -8,7 +8,7 @@ describe('Wave 1: Square', () => {
   test('it renders with X given', () => {
     render(<Square value="X" id={1} onClickCallback={() => { }} />)
     
-    const button = screen.getByText("X");
+    const button = screen.getByText('X');
 
     expect(button).toBeInTheDocument();
   });
@@ -16,7 +16,7 @@ describe('Wave 1: Square', () => {
   test('it renders with O given', () => {
     render(<Square value="O" id={1} onClickCallback={() => { }} />)
     
-    const button = screen.getByText("O");
+    const button = screen.getByText('O');
 
     expect(button).toBeInTheDocument();
   });
