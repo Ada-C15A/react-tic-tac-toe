@@ -11,7 +11,7 @@ const generateSquareComponents = (squares, onClickCallback) => {
       flatSquares.push(squares[i][j])
     }
   }
-  console.log(flatSquares)
+  // console.log(flatSquares)
   return flatSquares
   // return flatSquares.map((value, id) => {
   //   <Square
@@ -32,7 +32,7 @@ const generateSquareComponents = (squares, onClickCallback) => {
 
 const Board = ({ squares, onClickCallback }) => {
   const squareList = generateSquareComponents(squares, onClickCallback);
-  console.log(squareList);
+  // console.log(squareList);
   return <div className="grid">
     {squareList && squareList.map(s => {
       return (
