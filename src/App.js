@@ -85,6 +85,8 @@ const App = () => {
 
   const resetGame = () => {
     setSquares(generateSquares());
+    setWinner(null);
+    setPlayer(PLAYER_1);
   }
 
   return (
