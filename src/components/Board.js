@@ -3,21 +3,37 @@ import './Board.css';
 import Square from './Square';
 import PropTypes from 'prop-types';
 
+const generateSquareComponents = (squares,  onClickCallback) => {
 
-const generateSquareComponents = (squares, onClickCallback) => {
-  // Complete this for Wave 1
-  // squares is a 2D Array, but 
-  //  you need to return a 1D array
-  //  of square components
-
+  const squaresArray = destructureMatrix(squares)
+  const squaresList =  squaresArray.map( (square) => {
+    return <Square 
+            key={square.id}
+            id={square.id}
+            value={square.value}
+            onClickCallback={onClickCallback}
+            squares={squares}
+            />
+  })
+  return squaresList
 }
 
-const Board = ({ squares, onClickCallback }) => {
-  const squareList = generateSquareComponents(squares, onClickCallback);
-  console.log(squareList);
-  return <div className="grid" >
-    {squareList}
-  </div>
+
+const destructureMatrix = (squares) => {
+  let destructuredSquare = []
+
+  destructuredSquare.push(...squares[0])
+  destructuredSquare.push(...squares[1])
+  destructuredSquare.push(...squares[2])
+
+  return destructuredSquare
+}
+
+const Board = ({ onClickCallback, squares }) => {
+  const squareComponents = generateSquareComponents(squares, onClickCallback);
+  return  <div className="grid" >
+            {squareComponents}
+          </div>
 }
 
 Board.propTypes = {
