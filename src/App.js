@@ -33,25 +33,31 @@ const App = () => {
   // You will need to create a method to change the square 
   //   When it is clicked on.
   //   Then pass it into the squares as a callback
-  const [player, setPlayer] = useState(true);
+  const [player, setPlayer] = useState(PLAYER_1);
   
   const onClickCallback = (event) => {
     let updatedGrid = [];
     for(let i = 0; i < squares.length; i++) {
       for(let j = 0; j < squares.length; j++) {
-        if (event === squares[i][j].id) {
-          squares[i][j]['value'] = (swapPlayers() ? PLAYER_2 : PLAYER_1);
+        let currentSquare = squares[i][j];
+        if (currentSquare.id === event) {
+          if (currentSquare.value !== '')
+            return;
+            currentSquare.value = player;
+            if (player === PLAYER_1) {
+              setPlayer(PLAYER_2)
+            } else {
+              setPlayer(PLAYER_1);
+            }
         }
+        // if (event === squares[i][j].id) {
+        //   squares[i][j]['value'] = (PLAYER_1);
+        // }
       }
       updatedGrid.push(squares[i]);
     }
     setSquares(updatedGrid);
   }
-
-  function swapPlayers() {
-    setPlayer(!player);
-    return player;
-  };
 
   const checkForWinner = () => {
     // Complete in Wave 3
