@@ -11,7 +11,7 @@ const generateSquareComponents = (squares, onClickCallback) => {
   //  of square components
 
   const squareArray = squares.flat() 
-  const squareComponents = squareArray.map(s => <Square id={s.id} value={s.value} />)
+  const squareComponents = squareArray.map(s => <Square id={s.id} value={s.value} onClickCallback={onClickCallback} />)
 
   return squareComponents
 }

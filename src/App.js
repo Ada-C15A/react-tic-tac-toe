@@ -25,6 +25,19 @@ const generateSquares = () => {
   return squares;
 }
 
+// squares: [
+//   [
+//     {id: 0, value: ''},
+//     {id: 1, value: ''},
+//     {id: 2, value: ''},
+//   ],
+//   [
+//     {id: 3, value: ''},
+//     {id: 4, value: ''},
+//     {id: 5, value: ''},
+//   ]
+// ]
+
 const App = () => {
 
   // This starts state off as a 2D array of JS objects with
@@ -35,6 +48,18 @@ const App = () => {
   // You will need to create a method to change the square 
   //   When it is clicked on.
   //   Then pass it into the squares as a callback
+  const handleSquareClick = (updatedSquare) => {
+
+    const updatedSquares = squares.map(row => row.map(square => {
+      if (square.id === updatedSquare.id) {
+        return updatedSquare;
+      } else {
+        return square;
+      }
+    }))
+
+    setSquares(updatedSquares)
+  }
 
 
   const checkForWinner = () => {
@@ -62,7 +87,7 @@ const App = () => {
         <button>Reset Game</button>
       </header>
       <main>
-        <Board squares={squares} />
+        <Board squares={squares} onClickCallback={handleSquareClick} />
       </main>
     </div>
   );
