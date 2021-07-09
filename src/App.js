@@ -3,8 +3,8 @@ import './App.css';
 
 import Board from './components/Board';
 
-const PLAYER_1 = 'X';
-const PLAYER_2 = 'O';
+const PLAYER_1 = 'x';
+const PLAYER_2 = 'o';
 
 const generateSquares = () => {
   const squares = [];
@@ -24,25 +24,6 @@ const generateSquares = () => {
   return squares;
 }
 
-const destructureMatrix = (squares) => {
-  let destructuredSquare = []
-
-  destructuredSquare.push(...squares[0])
-  destructuredSquare.push(...squares[1])
-  destructuredSquare.push(...squares[2])
-
-  return destructuredSquare
-}
-
-const reshapeMatrix = (array) => {
-  let matrix = []
-
-  matrix.push([array[0], array[1], array[2]])
-  matrix.push([array[3], array[4], array[5]])
-  matrix.push([array[6], array[7], array[8]])
-  return matrix
-}
-
 const updateCurrentPlayer = (currentPlayer, setCurrentPlayer) => {
   const updatePlayer = currentPlayer === PLAYER_1 ? PLAYER_2:PLAYER_1
   setCurrentPlayer(updatePlayer)
@@ -51,23 +32,21 @@ const updateCurrentPlayer = (currentPlayer, setCurrentPlayer) => {
 const App = () => {
   const [squares, setSquares] = useState(generateSquares());
   const [currentPlayer, setCurrentPlayer] = useState(PLAYER_1)
-  const [squaresArray, setSquaresArray ] = useState(destructureMatrix(squares))
   const [winner, setWinner ] = useState(null)
 
-  const checkForWinner = (squaresArray) => {
-    console.log('checkForWinner')
+  const checkForWinner = (squares) => {
     let x = 0
     let o = 0
     let empty = false
     const possibilities = [
-      [squaresArray[0].value, squaresArray[1].value, squaresArray[2].value],
-      [squaresArray[3].value, squaresArray[4].value, squaresArray[5].value],
-      [squaresArray[6].value, squaresArray[7].value, squaresArray[7].value],
-      [squaresArray[0].value, squaresArray[3].value, squaresArray[6].value],
-      [squaresArray[1].value, squaresArray[4].value, squaresArray[2].value],
-      [squaresArray[2].value, squaresArray[5].value, squaresArray[8].value],
-      [squaresArray[0].value, squaresArray[4].value, squaresArray[8].value],
-      [squaresArray[2].value, squaresArray[4].value, squaresArray[6].value]
+      [squares[0][0].value, squares[0][1].value, squares[0][2].value],
+      [squares[1][0].value, squares[1][1].value, squares[1][2].value],
+      [squares[2][0].value, squares[2][1].value, squares[2][2].value],
+      [squares[0][0].value, squares[1][0].value, squares[2][0].value],
+      [squares[0][1].value, squares[1][1].value, squares[2][1].value],
+      [squares[0][2].value, squares[1][2].value, squares[2][2].value],
+      [squares[0][0].value, squares[1][1].value, squares[2][2].value],
+      [squares[0][2].value, squares[1][1].value, squares[2][0].value]
     ]
 
     for(let i = 0; i < possibilities.length; i++){
@@ -75,10 +54,10 @@ const App = () => {
         empty = true
       }
       if(possibilities[i][0] === possibilities[i][1] && possibilities[i][1] === possibilities[i][2]){
-        if(possibilities[i][0] === 'X'){
+        if(possibilities[i][0] === 'x'){
           x += 1
         }
-        if( possibilities[i][0] === 'O'){
+        if( possibilities[i][0] === 'o'){
           o += 1
         }
       }
@@ -90,33 +69,34 @@ const App = () => {
     if(x === 0 && o === 0 && !empty)
       setWinner('Tie')
     if( x > o){
-      setWinner('X')
+      setWinner('x')
     }
     if(x < o){
-      setWinner('O')
+      setWinner('o')
     }
-    console.log({winner})
   }
-  const onClickCallback = ((squareID, currentPlayer, squaresArray) => {
-    updateCurrentPlayer(currentPlayer, setCurrentPlayer)
-    squaresArray[squareID].value = currentPlayer
-    setSquaresArray(squaresArray)
-    const tempMatrix = reshapeMatrix(squaresArray)
-    setSquares(tempMatrix)
-    const tempSquaresArray = destructureMatrix(squares)
-    setSquaresArray(tempSquaresArray)
-    checkForWinner(squaresArray)
+
+  const updateSquaresByID = (squareID) => {
+    for(let i = 0; i < squares.length; i++){
+      for(let j = 0; j < squares[i].length; j++){
+        if(squares[i][j].id === squareID && squares[i][j].value === ''){
+          squares[i][j].value = currentPlayer
+          updateCurrentPlayer(currentPlayer, setCurrentPlayer)
+          setSquares(squares)
+        }
+      }
+    }
+  }
+
+  const onClickCallback = ((squareID) => {
+    if(winner === null){
+      updateSquaresByID(squareID)
+      checkForWinner(squares)
+    }
   })
 
   const resetGame = () => {
-    for(let i = 0; i < squaresArray.length; i++){
-      squaresArray[i].value = ''
-    }
-    const tempSquares = reshapeMatrix(squaresArray)
-    console.log({tempSquares})
-    console.log({squaresArray})
-    setSquares(tempSquares)
-    setSquaresArray(squaresArray)
+    setSquares((generateSquares()))
     setCurrentPlayer(PLAYER_1)
     setWinner(null)
   }
@@ -127,14 +107,13 @@ const App = () => {
         <h1>React Tic Tac Toe</h1>
         {winner === 'Tie' ? <h2 className='tieGame'>The game is tied!</h2> : ''}
         {winner === null ?  <h2>The current player is {currentPlayer}</h2> : ''}
-        {winner === 'O' || winner === 'X'? <h2>The winner is: <span className="winner"> Player{winner}</span>!!!!</h2> : ''}
+        {winner === 'o' || winner === 'x'? <h2>Winner is {winner.toLowerCase()}</h2> : ''}
         <button onClick={resetGame}>Reset Game</button>
       </header>
       <main>
         <Board
           onClickCallback={onClickCallback}
-          currentPlayer={currentPlayer}
-          squaresArray={squaresArray}
+          squares={squares}
         />
       </main>
     </div>

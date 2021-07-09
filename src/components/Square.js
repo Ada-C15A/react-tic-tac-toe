@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 
 import './Square.css'
 
-const Square = ({ id, value, onClickCallback, currentPlayer, squaresArray } ) => {
-
+const Square = ({ id, value, onClickCallback } ) => {
   return <button
     className="square"
-    onClick={()=>{onClickCallback(id, currentPlayer, squaresArray)}}
+    onClick={()=>{onClickCallback(id)}}
     id={id}
   >
     {value}
@@ -18,8 +17,6 @@ Square.propTypes = {
   id: PropTypes.number.isRequired,
   value: PropTypes.string.isRequired,
   onClickCallback: PropTypes.func.isRequired,
-  currentPlayer: PropTypes.string.isRequired,
-  squaresArray: PropTypes.array.isRequired,
 };
 
 export default Square;
