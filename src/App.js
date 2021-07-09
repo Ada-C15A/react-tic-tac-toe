@@ -24,18 +24,44 @@ const generateSquares = () => {
 }
 
 const App = () => {
-
-  // This starts state off as a 2D array of JS objects with
-  // empty value and unique ids.
   const [squares, setSquares] = useState(generateSquares());
-
-  // Wave 2
-  // You will need to create a method to change the square 
-  //   When it is clicked on.
-  //   Then pass it into the squares as a callback
   const [player, setPlayer] = useState(PLAYER_1);
-  
+  const [winner, setWinner] = useState(null);
+
+  const checkForWinner = () => {
+    let i = 0;
+
+    while (i < 3) {
+      if (squares[i][0].value === squares[i][1].value &&
+        squares[i][2].value === squares[i][1].value &&
+        squares[i][0].value !== '') {
+        return squares[i][0].value;
+      } else if (squares[0][i].value === squares[1][i].value &&
+        squares[2][i].value === squares[1][i].value &&
+        squares[0][i].value !== '') {
+        return squares[0][i].value;
+      }
+      i += 1;
+    }
+    if (squares[0][0].value === squares[1][1].value &&
+      squares[2][2].value === squares[1][1].value &&
+      squares[1][1].value !== '') {
+      return squares[0][0].value;
+    }
+
+    if (squares[0][2].value === squares[1][1].value &&
+      squares[2][0].value === squares[1][1].value &&
+      squares[1][1].value !== '') {
+      return squares[0][2].value;
+    }
+
+    return null;
+  }
+
   const onClickCallback = (event) => {
+    if (winner !== null)
+      return;
+    
     let updatedGrid = [];
     for(let i = 0; i < squares.length; i++) {
       for(let j = 0; j < squares.length; j++) {
@@ -43,35 +69,21 @@ const App = () => {
         if (currentSquare.id === event) {
           if (currentSquare.value !== '')
             return;
-
-            currentSquare.value = player;
-            if (player === PLAYER_1) {
-              setPlayer(PLAYER_2)
-            } else {
-              setPlayer(PLAYER_1);
-            }
+          currentSquare.value = player;
+          if (player === PLAYER_1) {
+            setPlayer(PLAYER_2)
+          } else {
+            setPlayer(PLAYER_1);
+          }
         }
       }
       updatedGrid.push(squares[i]);
     }
     setSquares(updatedGrid);
-  }
-
-  const checkForWinner = () => {
-    // Complete in Wave 3
-    // You will need to:
-    // 1. Go accross each row to see if 
-    //    3 squares in the same row match
-    //    i.e. same value
-    // 2. Go down each column to see if
-    //    3 squares in each column match
-    // 3. Go across each diagonal to see if 
-    //    all three squares have the same value.
-
+    setWinner(checkForWinner);
   }
 
   const resetGame = () => {
-    // Complete in Wave 4
     setSquares(generateSquares());
   }
 
@@ -79,7 +91,7 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <h1>React Tic Tac Toe</h1>
-        <h2>The winner is ... -- Fill in for wave 3 </h2>
+        <h2>{winner === null ? `` : `Winner is ${ winner }`}</h2>
         <button onClick={resetGame}>Reset Game</button>
       </header>
       <main>
