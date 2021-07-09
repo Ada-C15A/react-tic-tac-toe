@@ -94,7 +94,7 @@ const App = () => {
       <header className="App-header">
         <h1>React Tic Tac Toe</h1>
         <h2>{winner === null ? `` : `Winner is ${ winner }`}</h2>
-        <button onClick={resetGame}>Reset Game</button>
+        <button className='resetButton' onClick={resetGame}>Reset Game</button>
       </header>
       <main>
         <Board squares={squares} onClickCallback={onClickCallback}/>
