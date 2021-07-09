@@ -3,8 +3,8 @@ import './App.css';
 
 import Board from './components/Board';
 
-const PLAYER_1 = 'X';
-const PLAYER_2 = 'O';
+const PLAYER_1 = 'x';
+const PLAYER_2 = 'o';
 
 const generateSquares = () => {
   const squares = [];
@@ -43,6 +43,7 @@ const App = () => {
         if (currentSquare.id === event) {
           if (currentSquare.value !== '')
             return;
+
             currentSquare.value = player;
             if (player === PLAYER_1) {
               setPlayer(PLAYER_2)
@@ -50,9 +51,6 @@ const App = () => {
               setPlayer(PLAYER_1);
             }
         }
-        // if (event === squares[i][j].id) {
-        //   squares[i][j]['value'] = (PLAYER_1);
-        // }
       }
       updatedGrid.push(squares[i]);
     }
