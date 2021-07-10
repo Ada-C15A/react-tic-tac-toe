@@ -3,9 +3,10 @@ import './App.css';
 
 import Board from './components/Board';
 
-const PLAYER_1 = 'X';
-const PLAYER_2 = 'O';
+const PLAYER_1 = 'x';
+const PLAYER_2 = 'o';
 let currentPlayer=PLAYER_1;
+
 const generateSquares = () => {
   const squares = [];
 
@@ -21,7 +22,7 @@ const generateSquares = () => {
       currentId += 1;
     }
   }
-  console.log('ss',squares)
+
   return squares;
   
 }
@@ -31,36 +32,36 @@ const App = () => {
   // This starts state off as a 2D array of JS objects with
   // empty value and unique ids.
   const [squares, setSquares] = useState(generateSquares());
+  const [winner, setWinner] = useState(null);
 
   // Wave 2
   // You will need to create a method to change the square 
   //   When it is clicked on.
   //   Then pass it into the squares as a callback
    const onClickCallback=(returningId)=>{
-   console.log('id',returningId)
+
 
    const newSquares = []
-   let currentId=0
+
  
 
       for (let row =0; row<squares.length;row+=1){
         newSquares.push([])
         for(let col=0;col<squares.length; col+=1){
-          console.log('row col',squares[row][col].id)
+        
           if (squares[row][col].id === returningId){
             newSquares[row].push({
-              id:currentId,
+              id:returningId,
               value:currentPlayer
             })
-            currentId+=1
+       
           }else{
             newSquares[row].push(squares[row][col])
           }
          
         }
+
       }
-      console.log(' square',squares)
-     console.log('nnew square',newSquares)
    
       setSquares(newSquares);
 
@@ -69,12 +70,13 @@ const App = () => {
       } else if (currentPlayer === PLAYER_2) {
         currentPlayer =PLAYER_1;
       }
+      checkForWinner(newSquares)
   }
 
   
 
 
-  const checkForWinner = () => {
+  const checkForWinner = (board) => {
     // Complete in Wave 3
     // You will need to:
     // 1. Go accross each row to see if 
@@ -84,19 +86,51 @@ const App = () => {
     //    3 squares in each column match
     // 3. Go across each diagonal to see if 
     //    all three squares have the same value.
+    
+   let winningMoveList=[
+      [board[0][0],board[0][1],board[0][2]],
+      [board[1][0],board[1][1],board[1][2]],
+      [board[2][0],board[2][1],board[2][2]],
+      [board[0][0],board[1][0],board[2][0]],
+      [board[0][1],board[1][1],board[2][1]],
+      [board[0][2],board[1][2],board[2][2]],
+      [board[0][0],board[1][1],board[2][2]],
+      [board[0][2],board[1][1],board[2][0]],
 
+    ]
+
+
+
+    for(let i=0; i<winningMoveList.length;i++){
+    
+      let isWinner=false
+      if (winningMoveList[i][0].value === winningMoveList[i][1].value && winningMoveList[i][0].value ===winningMoveList[i][2].value  ){
+
+        if (winningMoveList[i][0].value === PLAYER_1) {
+          isWinner=true
+          setWinner('x')
+
+        }else if(winningMoveList[i][0].value === PLAYER_2){
+          isWinner=true
+          setWinner('o')
+  
+        }
+      }
+    }
   }
 
   const resetGame = () => {
     // Complete in Wave 4
+    setSquares(generateSquares());
+    setWinner(null);
   }
-
+console.log('winner',winner)
   return (
     <div className="App">
       <header className="App-header">
         <h1>React Tic Tac Toe</h1>
-        <h2>The winner is ... -- Fill in for wave 3 </h2>
-        <button>Reset Game</button>
+        <h2>Winner is {winner}</h2>
+        <button onClick={resetGame}>Reset Game</button>
       </header>
       <main>
         <Board squares={squares} onClickCallback={onClickCallback}/>
