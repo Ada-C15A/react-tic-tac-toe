@@ -20,15 +20,15 @@ const generateSquareComponents = (squares) => {
 
 const Board = ({ squares, onClickCallback }) => {
   const squareList = generateSquareComponents(squares);
-  
+
   return <div className="grid" >
     {squareList.map(squ => {
       return (
         <Square
-        id={squ.id}
-        key={squ.key}
-        value={squ.value}
-        onClickCallback={onClickCallback}
+          id={squ.id}
+          key={squ.key}
+          value={squ.value}
+          onClickCallback={onClickCallback}
         />
       )
     })}

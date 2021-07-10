@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import './Square.css'
 
-const Square = ({id, value, onClickCallback}) => {
+const Square = ({ id, value, onClickCallback }) => {
 
 
   const markSquare = () => {
@@ -13,7 +13,7 @@ const Square = ({id, value, onClickCallback}) => {
   //  Component to alert a parent 
   //  component when it's clicked on.
 
-  return <button 
+  return <button
     onClick={markSquare}
     className="square"
   >

@@ -31,6 +31,8 @@ const App = () => {
   // empty value and unique ids.
   const [squares, setSquares] = useState(generateSquares());
   const [currentPlayer, setCurrentPlayer] = useState(PLAYER_1);
+  const [winner, setWinner] = useState('');
+ 
   //const winner = checkForWinner(squares);
   // Wave 2
   // You will need to create a method to change the square 
@@ -42,34 +44,37 @@ const App = () => {
       id -= 3
       row++
     }
-    if (!squares[row][id]['value']){
+    if (!squares[row][id]['value']) {
       const newSquares = [...squares]
       newSquares[row][id]['value'] = currentPlayer
       setSquares(newSquares)
 
       const updatedPlayer = currentPlayer === PLAYER_1 ? PLAYER_2 : PLAYER_1
-      setCurrentPlayer(updatedPlayer)}
+      setCurrentPlayer(updatedPlayer)
+    }
   }
 
   const checkForWinner = () => {
-    const possibleLines = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6]
-    ];
-    // go over all possibly winning lines and check if they consist of only X's/only O's
-    for (let i = 0; i < possibleLines.length; i++) {
-      const [a, b, c] = possibleLines[i];
-      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return squares[a];
+    let i = 0;
+    while (i < 3){
+      if (squares[i][0].value === squares[i][1] && squares[i][2].value === squares[i][1].value && squares[i][0].value !== ''){
+        setWinner(currentPlayer);
+        return true;
+      } else if (squares[0][i].value === squares[1][i].value && squares[2][i].value === squares[1][i].value && squares[0][i].value !== ''){
+        setWinner(currentPlayer);
+        return true;
       }
+      i += 1;
     }
-    return null;
+      if (squares[0][0].value === squares[1][1].value && squares[2][0].value === squares[1][1].value && squares[1][1].value !== '' ){
+        setWinner(currentPlayer);
+        return true;
+      }
+      if (squares[0][2].value === squares[1][1].value && squares[2][0].value === squares[1][1].value && squares[1][1] !== ''){
+        setWinner(currentPlayer);
+        return true;
+      }
+      return null;
     // Complete in Wave 3
     // You will need to:
     // 1. Go accross each row to see if 
@@ -81,18 +86,18 @@ const App = () => {
     //    all three squares have the same value.
 
   }
-  
+
   const resetGame = () => {
- 
+
   }
-    // Complete in Wave 4
-  
+  // Complete in Wave 4
+
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>React Tic Tac Toe</h1>
-        <h2>The winner is ... -- Fill in for wave 3 </h2>
+        <h2>The winner is ... {winner} </h2>
         <button className='resetButton' onClick={resetGame}>Reset Game</button>
       </header>
       <main>
