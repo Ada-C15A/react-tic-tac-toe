@@ -11,23 +11,9 @@ const Square = ({ id, onClickCallback, value}) => {
   //  Component to alert a parent 
   //  component when it's clicked on.
 
-  const handleClick = () => {
-    if (clickCount % 2 === 0) {
-      newValue = 'x'
-    } else {
-      newValue = 'o'
-    }
-    const updatedSquare = {
-      id: id,
-      value: newValue
-    };
-    clickCount += 1;
-    onClickCallback(updatedSquare)
-  }
-
   return <button
     className="square"
-    onClick={() => handleClick()}
+    onClick={() => onClickCallback(id)}
   >
     {value}
   </button>

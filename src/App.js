@@ -43,22 +43,32 @@ const App = () => {
   // This starts state off as a 2D array of JS objects with
   // empty value and unique ids.
   const [squares, setSquares] = useState(generateSquares());
+  const [playerTurn, setPlayerTurn] = useState(PLAYER_1) // 'player_1 | player_2'
 
   // Wave 2
   // You will need to create a method to change the square 
   //   When it is clicked on.
   //   Then pass it into the squares as a callback
   const handleSquareClick = (updatedSquare) => {
-
     const updatedSquares = squares.map(row => row.map(square => {
-      if (square.id === updatedSquare.id) {
-        return updatedSquare;
+      if (square.id === updatedSquare) {
+        square.value = playerTurn
+        return square;
       } else {
         return square;
       }
     }))
 
+    updatePlayerTurn()
     setSquares(updatedSquares)
+  }
+
+  const updatePlayerTurn = () => {
+    if (playerTurn === PLAYER_1) {
+      setPlayerTurn(PLAYER_2)
+    } else {
+      setPlayerTurn(PLAYER_1)
+    }
   }
 
 
