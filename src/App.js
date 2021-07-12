@@ -51,7 +51,7 @@ const App = () => {
   //   Then pass it into the squares as a callback
   const handleSquareClick = (updatedSquare) => {
     const updatedSquares = squares.map(row => row.map(square => {
-      if (square.id === updatedSquare) {
+      if (square.id === updatedSquare && square.value === '') {
         square.value = playerTurn
         return square;
       } else {
