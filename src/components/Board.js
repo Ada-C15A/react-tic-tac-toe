@@ -9,7 +9,19 @@ const generateSquareComponents = (squares, onClickCallback) => {
   // squares is a 2D Array, but 
   //  you need to return a 1D array
   //  of square components
-
+  const SingleArraySquares = [];
+  for(let row of squares) {
+    for(let square of row) {
+      SingleArraySquares.push(
+        <Square 
+          key={square.id}
+          id={square.id}
+          value={square.value}
+          onClickCallback={onClickCallback}
+        />
+      )};
+  }
+  return SingleArraySquares
 }
 
 const Board = ({ squares, onClickCallback }) => {
